@@ -179,10 +179,12 @@ void addToHand(Hand* hand, Ficha ficha) {
 }
 
 void printHand(Hand* hand) {
+	int h = 1;
     node* current = hand->head;
     while (current != NULL) {
-        printf("(%d%c) ", current->key.numero, current->key.color);
+        printf("%d:(%d%c) ",h, current->key.numero, current->key.color);
         current = current->next;
+        h++;
     }
     printf("\n");
 }
@@ -533,6 +535,7 @@ startGame(Turns* turno, Stack* Pozo, Mesa* mesa)
 {
 	int t=1;
 	int trn=0;
+	int elec=0;
 
 	while(Pozo!=isEmpty){
 		system("CLS");
@@ -543,9 +546,33 @@ startGame(Turns* turno, Stack* Pozo, Mesa* mesa)
 			printf("\nTurno de %s", jugador);
 			printf("\nTU MANO ES:\n");
 			printHand(turno->pHands[trn]);
-			fichasParaJugar(turno->pHands[trn], mesa);
-			//jugada = opcionesTiro(turno->pHands[trn]);
-			system("pause");
+			printf("Que quieres hacer?\n\t1.-Jugar desde mano\n\t2.-Ver Mesa\n\t3.-Robar Ficha\n\t");
+			scanf("%d", &elec);
+			switch(elec)
+			{
+				case 1:
+					{
+					fichasParaJugar(turno->pHands[trn], mesa);
+					//jugada = opcionesTiro(turno->pHands[trn]);
+					system("pause");
+					break;
+					}
+				case 2:
+					{
+						printf("AQUI VA LE MESA!");
+						sleep(2);
+						break;
+					}
+				case 3:
+					{
+						addToHand(turno->pHands[trn],pop(Pozo));
+						break;
+					}
+				default:
+					{
+						printf("\nOpcion invalida, selecciona una de las anteriores. Pierdes turno por tonto!");
+					}
+			}
 		}
 		//TURNO DE CPU
 		else
